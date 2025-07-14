@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', monospace;
+    background: #f8f8f8;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+.controls {
+    position: absolute;
+    bottom: 20px;
+    z-index: 100;
+}
+
+.view-toggle-text { /* New class for the text toggle */
+    font-size: 24px; /* Larger for visibility */
+    cursor: pointer;
+    color: #007bff; /* Blue color to indicate interactivity */
+    user-select: none; /* Prevent text selection on double click */
+    transition: color 0.3s ease;
+}
+
+.view-toggle-text:hover {
+    color: #0056b3;
+}
+
+.quotes-container {
+    position: relative; /* All quotes will be absolutely positioned within this */
+    width: 100vw; /* Take full viewport width */
+    height: 100vh; /* Take full viewport height for stacking/dragging */
+    overflow-x: hidden; /* Always hide horizontal overflow */
+    overflow-y: hidden; /* Default to hidden for stacked view, controlled by JS */
+    transition: height 0.5s ease; /* Smooth height transition for grid view */
+}
+
+/* Styles for individual quote cards */
+.quote {
+    font-size: 13px;
+    padding: 18px;
+    text-align: left;
+    margin: 0;
+    border-radius: 3px;
+    position: absolute; /* Always absolute for JS positioning */
+    transform-origin: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px; /* Ensures a minimum size */
+    background: #fff; /* Default white fallback */
+    transition: transform 0.3s ease, top 0.3s ease, left 0.3s ease, box-shadow 0.2s ease; /* Smooth transitions for movement and shadow */
+    cursor: grab;
+    width: 280px; /* Fixed width for consistent sizing */
+    box-sizing: border-box; /* Include padding in width/height calculation */
+    z-index: 1; /* Default z-index */
+    /* No shadow by default */
+}
+
+/* New category-specific background colors */
+.category-creative-bg { background: #fff9c4; } /* Pale Yellow */
+.category-human-bg { background: #e8f4fd; } /* Pale Blue */
+.category-digital-bg { background: #f0f8e8; } /* Pale Green */
+.category-beauty-bg { background: #fdf0f0; } /* Pale Pink */
+
+.quote-content {
+    margin-bottom: 10px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: auto;
+    font-size: 10px;
+}
+
+.tag {
+    padding: 3px 6px;
+    border-radius: 3px;
+    opacity: 0.8;
+    color: #555; 
+}
+
+/* Specific tag text colors for each category */
+.category-creative-bg .tag { color: #8d7a00; background-color: rgba(255, 235, 59, 0.3); }
+.category-human-bg .tag { color: #0056b3; background-color: rgba(173, 216, 230, 0.3); }
+.category-digital-bg .tag { color: #33691e; background-color: rgba(144, 238, 144, 0.3); }
+.category-beauty-bg .tag { color: #c2185b; background-color: rgba(255, 192, 203, 0.3); }
+.quote:not(.category-creative-bg):not(.category-human-bg):not(.category-digital-bg):not(.category-beauty-bg) .tag {
+    color: #444; background-color: rgba(200, 200, 200, 0.3); 
+}
+
+.quote:hover {
+    transform: scale(1.02); /* Slight scale on hover */
+    z-index: 10; /* Bring to front on hover */
+}
+
+.quote.dragging {
+    cursor: grabbing;
+    z-index: 999; /* Highest z-index when dragging */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Add shadow only when dragging */
+    transition: none; /* No transition during drag for responsiveness */
+}
+
+@media (max-width: 600px) {
+    .quote {
+        font-size: 12px;
+        padding: 15px;
+        width: 90%; /* Adjust width for smaller screens */
+        /* height: auto; Removed fixed height */
+    }
+}
