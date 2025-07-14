@@ -19,7 +19,9 @@ body {
 }
 
 .view-toggle-text { /* New class for the text toggle */
-    font-size: 24px; /* Larger for visibility */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 12px; /* Larger for visibility */
     cursor: pointer;
     color: #007bff; /* Blue color to indicate interactivity */
     user-select: none; /* Prevent text selection on double click */
