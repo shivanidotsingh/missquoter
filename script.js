@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isGridView = false;
         quotesContainer.style.height = '100vh'; // Reset container height for full viewport
         quotesContainer.style.overflowY = 'hidden'; // Hide overflow for stacked view
-        viewAllToggle.textContent = '< >'; // Set toggle text for stacked view
+        viewAllToggle.textContent = 'distribute 🪄'; // Set toggle text for stacked view
 
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function arrangeInGrid() {
         isGridView = true;
         quotesContainer.style.overflowY = 'auto'; // Enable scrolling for grid view
-        viewAllToggle.textContent = '> <'; // Set toggle text for grid view
+        viewAllToggle.textContent = 'gather'; // Set toggle text for grid view
 
         const containerWidth = quotesContainer.offsetWidth;
         const quoteWidth = 280; // Fixed width of a quote card
