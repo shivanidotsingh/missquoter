@@ -3,45 +3,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const quotes = Array.from(document.querySelectorAll('.quote'));
     const viewAllToggle = document.getElementById('viewAllToggle');
 
-        // Shuffle quotes array so layout order changes every load
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-    shuffle(quotes);
-
     let isDragging = false;
     let currentDraggable = null;
     let xOffset = 0;
     let yOffset = 0;
     let maxZIndex = 1; // To manage z-index for dragged elements
-    let isGridView = false; // Track current view state
+    let isGridView = false; 
 
-    // Function to stack cards in the center with random tilts
+    
     function stackCards() {
-        isGridView = false;
-        quotesContainer.style.height = '100vh'; // Reset container height for full viewport
-        quotesContainer.style.overflowY = 'hidden'; // Hide overflow for stacked view
-        viewAllToggle.textContent = 'distribute 🪄'; // Set toggle text for stacked view
+    isGridView = false;
+    quotesContainer.style.height = '100vh'; // Reset container height for full viewport
+    quotesContainer.style.overflowY = 'hidden'; // Hide overflow for stacked view
+    viewAllToggle.textContent = 'distribute 🪄'; // Set toggle text for stacked view
 
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
-        quotes.forEach((quote) => {
-            // Reset any previous inline styles from dragging or grid
-            quote.style.boxShadow = 'none'; // Remove shadow
-            quote.style.zIndex = 1; // Reset z-index
-            quote.style.cursor = 'grab';
+    // Pick a random index that will become the topmost card
+    const frontIndex = Math.floor(Math.random() * quotes.length);
 
-            // Apply initial stacked styles with random rotation
-            const randomRotation = Math.random() * 6 - 3; // -3deg to 3deg
-            quote.style.left = `${centerX}px`;
-            quote.style.top = `${centerY}px`;
-            quote.style.transform = `translate(-50%, -50%) rotate(${randomRotation}deg)`;
-        });
-    }
+    quotes.forEach((quote, index) => {
+        // Reset styles
+        quote.style.boxShadow = 'none';
+        quote.style.cursor = 'grab';
+
+        // Base z-index for all
+        let z = 1;
+        // If this is the chosen “front” card, bump it above others
+        if (index === frontIndex) {
+            z = 999; // or any number > 1
+        }
+        quote.style.zIndex = z;
+
+        // Position in center with slight random tilt
+        const randomRotation = Math.random() * 6 - 3; // -3deg to 3deg
+        quote.style.left = `${centerX}px`;
+        quote.style.top = `${centerY}px`;
+        quote.style.transform = `translate(-50%, -50%) rotate(${randomRotation}deg)`;
+    });
+
+    // Keep drag z-index logic consistent
+    maxZIndex = 999;
+}
+
 
     // Function to arrange cards in a masonry-like grid
     function arrangeInGrid() {
