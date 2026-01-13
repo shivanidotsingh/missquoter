@@ -54,18 +54,22 @@ document.addEventListener('DOMContentLoaded', () => {
         quotesContainer.style.overflowY = 'auto'; // Enable scrolling for grid view
         viewAllToggle.textContent = 'gather'; // Set toggle text for grid view
 
-        const containerWidth = quotesContainer.offsetWidth;
-        const gap = 20; 
-        const quoteWidth = Math.ceil(quotes[0].getBoundingClientRect().width);
+        const containerWidth = quotesContainer.clientWidth;
+        const gap = 20;
+        const sidePad = 12;
 
+        // Fit cards to container (prevents right bleed on mobile)
+        const maxCardWidth = 280;
+        const quoteWidth = Math.max(240, Math.min(maxCardWidth, containerWidth - sidePad * 2));
 
-        // Calculate number of columns based on available width
-        let numColumns = Math.floor((containerWidth + gap) / (quoteWidth + gap));
+        // columns based on usable width (inside padding)
+        const usableWidth = containerWidth - sidePad * 2;
+        let numColumns = Math.floor((usableWidth + gap) / (quoteWidth + gap));
         if (numColumns < 1) numColumns = 1;
 
-        // Calculate the actual width the grid will occupy and its starting X position to center it
         const actualGridWidth = (numColumns * quoteWidth) + ((numColumns - 1) * gap);
-        const gridStartLeft = Math.max(0, Math.floor((containerWidth - actualGridWidth) / 2));
+        const gridStartLeft = sidePad + Math.max(0, Math.floor((usableWidth - actualGridWidth) / 2));
+
 
         // Initialize an array to track the current height of each column
         // Start with a top margin of 30px for all columns
@@ -75,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             quote.style.boxShadow = 'none'; // Remove shadow
             quote.style.cursor = 'default';
             quote.style.zIndex = 1; // Reset z-index for grid view
+            quote.style.width = `${quoteWidth}px`;
 
             // Find the column with the minimum height to place the next quote
             let minHeight = Infinity;
