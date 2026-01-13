@@ -55,16 +55,17 @@ document.addEventListener('DOMContentLoaded', () => {
         viewAllToggle.textContent = 'gather'; // Set toggle text for grid view
 
         const containerWidth = quotesContainer.offsetWidth;
-        const quoteWidth = 280; // Fixed width of a quote card
-        const gap = 20; // Gap between cards
+        const gap = 20; 
+        const quoteWidth = Math.ceil(quotes[0].getBoundingClientRect().width);
+
 
         // Calculate number of columns based on available width
-        let numColumns = Math.floor((containerWidth - 60) / (quoteWidth + gap)); // -60 for body padding
+        let numColumns = Math.floor((containerWidth + gap) / (quoteWidth + gap));
         if (numColumns < 1) numColumns = 1;
 
         // Calculate the actual width the grid will occupy and its starting X position to center it
         const actualGridWidth = (numColumns * quoteWidth) + ((numColumns - 1) * gap);
-        const gridStartLeft = (containerWidth - actualGridWidth) / 2;
+        const gridStartLeft = Math.max(0, Math.floor((containerWidth - actualGridWidth) / 2));
 
         // Initialize an array to track the current height of each column
         // Start with a top margin of 30px for all columns
